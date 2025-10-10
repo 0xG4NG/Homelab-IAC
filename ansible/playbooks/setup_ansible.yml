@@ -1,0 +1,6 @@
+---
+- name: Configure ansible node
+  hosts: ANSIBLE
+  become: true
+  roles:
+    - ssh_identity_key

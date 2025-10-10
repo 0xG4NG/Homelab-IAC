@@ -1,0 +1,49 @@
+
+*vault*.yml
+*secrets*.yml
+inventories/homelab/group_vars/all/bws.yml
+/.ansible
+ansible/facts_cache/
+
+# Ansible Vault password files
+.vault_pass
+*.vault
+ansible/.vault
+
+# # 2. Ansible-specific Files
+# Logs, retry files, and temporary directories
+logs/
+*.log
+*.retry
+tmp/
+
+# # 3. Python Dependencies & Virtual Environments
+# Ignore the virtual environment where you install Ansible
+/.venv/
+/venv/
+/env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# # 4. Ansible Galaxy Dependencies
+# If you install roles or collections from Galaxy, don't commit them.
+# Instead, commit the requirements.yml file.
+# (These paths are relative to the project root)
+collections/
+
+# # 5. Operating System and Code Editor Files
+# macOS files
+.DS_Store
+
+# Vim files
+*.swp
+*.swo
+
+# IDE configuration files (optional, but recommended)
+.idea/
+
+# .env
+*.env

@@ -1,0 +1,6 @@
+---
+- name: Instalar y configurar LLDAP en Localhost
+  hosts: localhost
+  become: true
+  roles:
+    - lldap

@@ -1,0 +1,4 @@
+---
+bitwarden_cli_bw_download_url: "https://vault.bitwarden.com/download/?app=cli&platform=linux"
+bitwarden_cli_bw_install_dir: "/usr/local/bin"
+bitwarden_cli_bw_tmp_dir: "/tmp/bw-cli"

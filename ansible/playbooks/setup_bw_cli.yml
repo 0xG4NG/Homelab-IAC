@@ -1,0 +1,6 @@
+---
+- name: Instalar Bitwarden CLI en el sistema
+  hosts: localhost
+  become: true
+  roles:
+    - bitwarden_cli

@@ -1,0 +1,3 @@
+---
+lldap_ldap_server: "ldap://lldap.g4ng.es"
+lldap_ldap_basedn: "dc=example,dc=com"

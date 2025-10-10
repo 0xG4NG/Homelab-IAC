@@ -1,0 +1,4 @@
+---
+bws_secret_id: "4b8aaec0-5a50-489c-a2fa-b37200aee702"
+dest_dir: "/home/{{ ansible_user_id }}/.ssh"
+dest_filename: "id_rsa"
