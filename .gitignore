@@ -9,6 +9,7 @@ ansible/facts_cache/
 *.vault
 ansible/.vault
 .vscode
+.vscode/settings.json
 
 logs/
 *.log
