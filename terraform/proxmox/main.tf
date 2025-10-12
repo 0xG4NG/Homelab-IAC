@@ -12,3 +12,4 @@ module "pihole_lxc" {
   lxc_password    = var.lxc_root_password
   lxc_ip          = "192.168.1.5/24"
   lxc_gateway     = "192.168.1.1"
+}
