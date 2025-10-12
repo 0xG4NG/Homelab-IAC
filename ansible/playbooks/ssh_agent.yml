@@ -1,0 +1,23 @@
+---
+- name: Load SSH private key into ssh-agent
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+
+    - name: Ensure ssh-agent is running
+      ansible.builtin.shell: |
+        eval $(ssh-agent -s)
+        set -o pipefail
+      register: ssh_agent
+      changed_when: false
+
+    - name: Add private key to ssh-agent
+      ansible.builtin.shell: |
+        set -o pipefail
+        echo "{{ ansible_private_key_bws }}" | ssh-add /dev/stdin
+      environment:
+        SSH_AUTH_SOCK: "{{ lookup('env', 'SSH_AUTH_SOCK') }}"
+      register: ssh_add
+      changed_when: true
+      no_log: true

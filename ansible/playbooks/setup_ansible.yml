@@ -3,4 +3,4 @@
   hosts: ANSIBLE
   become: true
   roles:
-    - ssh_identity_key
+    - ssh

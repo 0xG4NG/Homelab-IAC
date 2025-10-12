@@ -1,0 +1,6 @@
+---
+- name: Setup SSH on all nodes
+  hosts: all
+  become: true
+  roles:
+    - role: ssh
