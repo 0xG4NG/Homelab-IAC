@@ -11,6 +11,8 @@
         set -o pipefail
       register: ssh_agent
       changed_when: false
+      args:
+        executable: /bin/bash
 
     - name: Add private key to ssh-agent
       ansible.builtin.shell: |
@@ -21,3 +23,5 @@
       register: ssh_add
       changed_when: true
       no_log: true
+      args:
+        executable: /bin/bash
