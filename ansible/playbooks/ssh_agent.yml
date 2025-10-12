@@ -22,6 +22,5 @@
         SSH_AUTH_SOCK: "{{ lookup('env', 'SSH_AUTH_SOCK') }}"
       register: ssh_add
       changed_when: true
-      no_log: true
       args:
         executable: /bin/bash
