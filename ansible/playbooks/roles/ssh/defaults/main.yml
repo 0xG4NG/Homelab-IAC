@@ -1,0 +1,3 @@
+ssh_ansible_public_key_bws: "{{ lookup('community.general.bitwarden_secrets_manager',
+     'ddd446f9-7d6f-4b65-9b70-b37301083e18',
+      bws_access_token=bws_access_token).value }}"
