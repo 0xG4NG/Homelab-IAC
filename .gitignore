@@ -8,7 +8,7 @@ ansible/facts_cache/
 .vault_pass
 *.vault
 ansible/.vault
-.vscode/
+.vscode
 
 logs/
 *.log
