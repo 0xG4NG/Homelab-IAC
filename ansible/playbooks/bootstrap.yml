@@ -1,0 +1,12 @@
+---
+- name: 1. Configurar SSH seguro
+  hosts: all
+  become: true
+  roles:
+    - ssh
+
+- name: 2. Configurar clientes LLDAP
+  hosts: all
+  become: true
+  roles:
+    - lldap
