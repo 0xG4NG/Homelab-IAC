@@ -1,0 +1,39 @@
+[sssd]
+services = nss, pam, sudo
+config_file_version = 2
+domains = default
+
+[nss]
+
+[pam]
+
+[domain/default]
+id_provider = ldap
+auth_provider = ldap
+
+
+ldap_uri = {{ lldap_ldap_server }}
+ldap_search_base = {{ lldap_ldap_basedn }}
+
+ldap_default_bind_dn =
+ldap_default_authtok =
+
+# Opciones para LLDAP
+ldap_schema = rfc2307bis
+ldap_user_search_base = ou=people,{{ lldap_ldap_basedn }}
+ldap_user_object_class = person
+ldap_user_name = uid
+ldap_user_full_name = cn
+ldap_user_home_directory = homeDirectory
+ldap_user_gid_number = gidNumber
+
+ldap_group_search_base = ou=groups,{{ lldap_ldap_basedn }}
+ldap_group_object_class = groupOfNames
+ldap_group_name = cn
+
+access_provider = ldap
+create_homedir = True
+ldap_sudo_search_base = ou=sudoers,{{ lldap_ldap_basedn }}
+cache_credentials = True
+default_shell = /bin/bash
+fallback_homedir = /home/%u

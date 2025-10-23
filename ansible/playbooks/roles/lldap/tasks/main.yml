@@ -1,27 +1,25 @@
 ---
-- name: Install required packages
+- name: Install required packages for Debian/Ubuntu
   ansible.builtin.package:
     name:
       - sssd
-      - sssd-client
       - sssd-tools
       - oddjob-mkhomedir
-      - authconfig
+      - ldap-utils
     state: present
 
-- name: Configure LDAP authentication
-  ansible.builtin.shell: >
-    authconfig
-    --enableldap
-    --enableldapauth
-    --ldapserver {{ ldap_server }}
-    --ldapbasedn {{ ldap_basedn }}
-    --enablemkhomedir
-    --update
-  args:
-    warn: false
-    creates: /etc/sssd/sssd.conf
-  notify: restart sssd
+- name: Configure SSSD configuration file
+  ansible.builtin.template:
+    src: sssd.conf.j2
+    dest: /etc/sssd/sssd.conf
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Restart sssd
+
+- name: Enable SSSD and mkhomedir in PAM
+  ansible.builtin.command: pam-auth-update --enable sssd --enable mkhomedir --force
+  changed_when: false
 
 - name: Check user g4ng from LDAP
   ansible.builtin.command: id g4ng
@@ -31,4 +29,4 @@
 
 - name: Display g4ng info
   ansible.builtin.debug:
-    msg: "{{ g4ng_info.stdout }}"
+    msg: "{{ lldap_g4ng_info.stdout }}"
