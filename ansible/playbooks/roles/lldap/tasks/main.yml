@@ -21,6 +21,9 @@
   ansible.builtin.command: pam-auth-update --enable sssd --enable mkhomedir --force
   changed_when: false
 
+- name: Force handlers to run now (to restart sssd)
+  ansible.builtin.meta: flush_handlers
+
 - name: Check user g4ng from LDAP
   ansible.builtin.command: id g4ng
   register: lldap_g4ng_info
