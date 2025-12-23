@@ -1,0 +1,8 @@
+---
+- name: Configurar mis Dotfiles
+  hosts: local
+  vars:
+    git_user_name: "Tu Nombre Real"
+    git_user_email: "hola@tuweb.com"
+  roles:
+    - dotfiles

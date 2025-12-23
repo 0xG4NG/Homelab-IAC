@@ -1,0 +1,17 @@
+---
+- name: Set timezone to Europe/Madrid
+  community.general.timezone:
+    name: Europe/Madrid
+
+- name: Update apt cache and install essentials
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+    name:
+      - curl
+      - git
+      - btop
+      - nvim
+      - unzip
+      - gnupg
+    state: present
