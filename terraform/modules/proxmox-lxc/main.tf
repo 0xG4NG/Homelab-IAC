@@ -17,7 +17,7 @@ resource "proxmox_lxc" "ct" {
 
   # Network Configuration
   network {
-    name   = vasr.network_name
+    name   = var.network_name
     bridge = var.network_bridge
     ip     = var.network_ip
     gw     = var.network_gateway

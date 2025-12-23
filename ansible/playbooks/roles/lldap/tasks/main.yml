@@ -4,7 +4,7 @@
     name:
       - sssd
       - sssd-tools
-      - oddjob-mkhomedir
+      - libpam-sss
       - ldap-utils
     state: present
 
@@ -24,8 +24,8 @@
 - name: Force handlers to run now (to restart sssd)
   ansible.builtin.meta: flush_handlers
 
-- name: Check user g4ng from LDAP
-  ansible.builtin.command: id g4ng
+- name: Check user from LDAP
+  ansible.builtin.command: id {{ lldap_test_user | default('g4ng') }}
   register: lldap_g4ng_info
   ignore_errors: true
   changed_when: false
