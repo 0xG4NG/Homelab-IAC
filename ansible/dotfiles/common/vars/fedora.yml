@@ -1,0 +1,11 @@
+---
+common_packages:
+  - git
+  - curl
+  - neovim
+  - btop
+  - zsh
+  - python3
+  - python3-pip
+  - unzip
+  - golang
