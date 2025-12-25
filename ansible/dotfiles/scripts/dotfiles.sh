@@ -1,23 +1,26 @@
 #!/usr/bin/bash
 
-# Modo estricto: detiene el script si hay errores, variables no definidas o fallos en pipes
+# Strict mode: fail on error, undefined vars, or pipe failures. Safety first!
 set -euo pipefail
 
 DOTFILES_DIR="$HOME/.dotfiles"
 
+# Wrapper to log the command being executed for better visibility
 function _cmd {
   echo "Running: $*"
   "$@"
 }
 
+# Identify the OS distribution to choose the right package manager later
 function detect_os {
   # shellcheck source=/dev/null
   [[ -f /etc/os-release ]] && source /etc/os-release && echo "${ID:-unknown}" || echo "unknown"
 }
 
+# Install Ansible only if it's missing to keep things fast
 function install_ansible {
   if command -v ansible &> /dev/null; then
-    echo "Ansible ya está instalado."
+    echo "Ansible is already installed."
     return
   fi
 
@@ -38,6 +41,7 @@ function install_ansible {
   esac
 }
 
+# Clone the repo or update it if I already have it locally
 function clone_dotfiles {
   if [[ -d "$DOTFILES_DIR" ]]; then
     echo "Dotfiles already exists. Updating the repo"
@@ -49,11 +53,11 @@ function clone_dotfiles {
 }
 
 
-
-# Main execution
+# --- Main Execution Flow ---
 os=$(detect_os)
 echo "Detected OS: $os"
 install_ansible "$os"
 clone_dotfiles
 
+# Finally, run the playbook (commented out for now until I'm ready)
 # _cmd ansible-playbook "$DOTFILES_DIR/main.yml" --limit local --ask-become-pass
