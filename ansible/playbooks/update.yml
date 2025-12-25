@@ -1,32 +1,16 @@
 ---
 - name: Weekly System Update
   hosts: all
-  become: true
   tasks:
-    - name: Update apt cache (Debian/Ubuntu)
+    - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
-      when: ansible_os_family == 'Debian'
 
-    - name: Upgrade all packages (Debian/Ubuntu)
+    - name: Upgrade all packages
       ansible.builtin.apt:
-        upgrade: dist
-      when: ansible_os_family == 'Debian'
+        upgrade: true
 
-    - name: Upgrade all packages (Fedora)
-      ansible.builtin.dnf:
-        name: "*"
-        state: latest
-        update_cache: true
-      when: ansible_distribution == 'Fedora'
-
-    - name: Remove unnecessary packages (Debian/Ubuntu)
+    - name: Remove unnecessary packages (keep config files)
       ansible.builtin.apt:
         autoremove: true
         purge: true
-      when: ansible_os_family == 'Debian'
-
-    - name: Remove unnecessary packages (Fedora)
-      ansible.builtin.dnf:
-        autoremove: true
-      when: ansible_distribution == 'Fedora'
