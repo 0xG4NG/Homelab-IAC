@@ -1,8 +1,0 @@
----
-- name: Configurar mis Dotfiles
-  hosts: local
-  vars:
-    git_user_name: "0xG4NG"
-    git_user_email: "ruben@g4ng.es"
-  roles:
-    - dotfiles

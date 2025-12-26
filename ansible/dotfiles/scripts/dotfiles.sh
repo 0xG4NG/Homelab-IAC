@@ -4,6 +4,7 @@
 set -euo pipefail
 
 DOTFILES_DIR="$HOME/.dotfiles"
+REPO_URL="https://github.com/0xG4NG/Homelab-IAC.git"
 
 # Wrapper to log the command being executed for better visibility
 function _cmd {
@@ -25,6 +26,10 @@ function install_ansible {
   fi
 
   case $1 in
+  debian)
+  _cmd sudo apt-get update
+  _cmd sudo apt-get install -y ansible
+  ;;
   ubuntu)
     _cmd sudo apt-get update
     _cmd sudo apt-get install -y software-properties-common
@@ -36,7 +41,7 @@ function install_ansible {
     ;;
   *)
     echo "Unsupported OS: $1"
-    echo "Supported OS: ubuntu, fedora"
+    echo "Supported OS: ubuntu, debian, fedora"
     ;;
   esac
 }
@@ -47,8 +52,8 @@ function clone_dotfiles {
     echo "Dotfiles already exists. Updating the repo"
     _cmd git -C "$DOTFILES_DIR" pull --quiet
   else
-    echo "Cloning @0xG4NG/dotfiles repo"
-    _cmd git clone --quiet --branch main https://github.com/0xG4NG/Dotfiles.git "$DOTFILES_DIR"
+    echo "Cloning @0xG4NG/Homelab-IAC repo"
+    _cmd git clone --quiet --branch main "$REPO_URL" "$DOTFILES_DIR"
   fi
 }
 
@@ -60,4 +65,4 @@ install_ansible "$os"
 clone_dotfiles
 
 # Finally, run the playbook (commented out for now until I'm ready)
-# _cmd ansible-playbook "$DOTFILES_DIR/main.yml" --limit local --ask-become-pass
+_cmd ansible-playbook "$DOTFILES_DIR/ansible/dotfiles/configure_dotfiles.yml" --limit local --ask-become-pass
