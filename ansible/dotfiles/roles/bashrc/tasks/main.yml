@@ -1,0 +1,6 @@
+---
+- name: Aplicar configuración de Bash
+  ansible.builtin.copy:
+    src: .bashrc
+    dest: ~/.bashrc
+    mode: '0644'
