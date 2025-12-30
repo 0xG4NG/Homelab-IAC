@@ -50,7 +50,9 @@ function install_ansible {
 function clone_dotfiles {
   if [[ -d "$DOTFILES_DIR" ]]; then
     echo "Dotfiles already exists. Updating the repo"
-    _cmd git -C "$DOTFILES_DIR" pull --quiet
+    # Fetch latest changes and reset hard to match origin/main, overwriting local conflicts
+    _cmd git -C "$DOTFILES_DIR" fetch origin --quiet
+    _cmd git -C "$DOTFILES_DIR" reset --hard origin/main --quiet
   else
     echo "Cloning @0xG4NG/Homelab-IAC repo"
     _cmd git clone --quiet --branch main "$REPO_URL" "$DOTFILES_DIR"
