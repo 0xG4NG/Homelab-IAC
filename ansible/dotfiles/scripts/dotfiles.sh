@@ -65,6 +65,6 @@ install_ansible "$os"
 clone_dotfiles
 
 # Finally, run the playbook (commented out for now until I'm ready)
-_cmd ansible-playbook "$DOTFILES_DIR/ansible/dotfiles/configure_dotfiles.yml" --limit localhost --ask-become-pass
+_cmd ansible-playbook "$DOTFILES_DIR/ansible/dotfiles/configure_dotfiles.yml" --ask-become-pass
 
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/0xG4NG/Homelab-IAC/main/ansible/dotfiles/scripts/dotfiles.sh)"
