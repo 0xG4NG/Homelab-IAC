@@ -24,7 +24,7 @@ set fish_greeting
 # set TERM xterm-256color
 
 if status is-interactive
-    fish_config theme choose "TokyoNight Night"
+    fish_config theme choose "Rosé Pine Moon"
 end
 
 # set up NEOVIM as a default editor.
@@ -37,16 +37,6 @@ set -g fish_cursor_insert block
 set -g fish_cursor_replace block
 set -g fish_cursor_visual block
 
-# Open tmux as default when the shell starts
-# Only attach if we're in an interactive session to avoid breaking scripts
-if status is-interactive; and not set -q TMUX
-    tmux new-session -A -s mainline
-end
-
-# initialize zoxide only in interactive mode
-if status is-interactive
-    zoxide init fish | source
-end
 
 # Generated for envman. Do not edit.
 test -s ~/.config/envman/load.fish; and source ~/.config/envman/load.fish
