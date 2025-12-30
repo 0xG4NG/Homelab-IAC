@@ -1,4 +1,9 @@
 ---
+- name: Habilitar repositorio COPR atim/starship
+  become: true
+  ansible.builtin.command: dnf copr enable atim/starship -y
+  changed_when: false
+
 - name: Instalar Starship
   become: true
   ansible.builtin.package:
