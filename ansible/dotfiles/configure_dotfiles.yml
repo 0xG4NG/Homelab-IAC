@@ -4,3 +4,4 @@
   roles:
     - fish
     - common
+    - starship
