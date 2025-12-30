@@ -2,6 +2,5 @@
 - name: Configure dotfiles for individual tools
   hosts: all
   roles:
-
-    - role: common
-      tags: [dotfiles]
+    - fish
+    - common
