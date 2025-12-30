@@ -17,9 +17,9 @@
 - name: Set fish as default shell for the user
   become: true
   ansible.builtin.user:
-    name: "{{ ansible_user }}"
+    name: "{{ ansible_user_id }}"
     shell: "{{ fish_path.stdout }}"
-  when: fish_path.stdout is defined
+  when: fish_path.stdout | length > 0
 
 - name: Create the '$HOME/.config/fish' directory if not exists
   ansible.builtin.file:
