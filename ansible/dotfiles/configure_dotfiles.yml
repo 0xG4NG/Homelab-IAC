@@ -1,7 +1,0 @@
----
-- name: Configure dotfiles for individual tools
-  hosts: localhost
-  roles:
-    - fish
-    - common
-    - starship
