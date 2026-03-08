@@ -1,3 +1,14 @@
 ---
 lldap_ldap_server: "ldap://lldap.g4ng.es:3890"
-lldap_ldap_basedn: "dc=example,dc=com"
+lldap_ldap_basedn: "dc=g4ng,dc=es"
+
+# Optional: bind credentials (leave empty for anonymous bind as LLDAP supports it)
+lldap_bind_dn: ""
+lldap_bind_password: ""
+
+# User to verify LDAP is working after configuration
+lldap_test_user: "g4ng"
+
+# PAM / home directory
+lldap_default_shell: "/bin/bash"
+lldap_fallback_homedir: "/home/%u"

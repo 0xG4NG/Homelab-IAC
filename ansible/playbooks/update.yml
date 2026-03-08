@@ -1,16 +1,33 @@
 ---
-- name: Weekly System Update
+# Weekly system update for all nodes
+# Usage: ansible-playbook playbooks/update.yml
+# Schedule: runs via GitHub Actions every Sunday at 02:00
+
+- name: System update — all nodes
   hosts: all
+  become: true
+  serial: 5  # rolling update, max 5 hosts in parallel
   tasks:
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
+        cache_valid_time: 0  # force refresh
 
     - name: Upgrade all packages
       ansible.builtin.apt:
-        upgrade: true
+        upgrade: dist
 
-    - name: Remove unnecessary packages (keep config files)
+    - name: Remove unused packages
       ansible.builtin.apt:
         autoremove: true
         purge: true
+
+    - name: Check if reboot is required
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: reboot_required
+
+    - name: Notify if reboot needed
+      ansible.builtin.debug:
+        msg: "⚠️  Reboot required on {{ inventory_hostname }}"
+      when: reboot_required.stat.exists

@@ -1,17 +1,24 @@
 ---
-- name: Set timezone to Europe/Madrid
+- name: Set timezone
   community.general.timezone:
-    name: Europe/Madrid
+    name: "{{ common_timezone }}"
 
-- name: Update apt cache and install essentials
+- name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
-    name:
-      - curl
-      - git
-      - btop
-      - nvim
-      - unzip
-      - gnupg
+
+- name: Install essential packages
+  ansible.builtin.apt:
+    name: "{{ common_packages + common_extra_packages }}"
     state: present
+
+- name: Set system locale
+  community.general.locale_gen:
+    name: "{{ common_locale }}"
+    state: present
+
+- name: Remove unused packages
+  ansible.builtin.apt:
+    autoremove: true
+    purge: true

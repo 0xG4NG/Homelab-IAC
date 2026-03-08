@@ -1,0 +1,12 @@
+# Copy this file to terraform.tfvars and fill in your values.
+# terraform.tfvars is excluded from git via .gitignore.
+
+proxmox_api_url      = "https://192.168.1.100:8006/api2/json"
+proxmox_token_id     = "root@pam!terraform"
+proxmox_token_secret = "REPLACE_ME"
+proxmox_node         = "pve"
+
+bws_access_token    = "REPLACE_ME"
+bws_organization_id = "REPLACE_ME"
+
+lxc_root_password = "REPLACE_ME"

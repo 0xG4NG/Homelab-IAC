@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: common
+  author: g4ng
+  description: Base system configuration for all nodes (timezone, locale, essential packages)
+  license: MIT
+  min_ansible_version: "2.14"
+  platforms:
+    - name: Debian
+      versions: [bullseye, bookworm]
+    - name: Ubuntu
+      versions: ["22.04", "24.04"]
+
+dependencies: []

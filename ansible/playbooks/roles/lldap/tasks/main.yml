@@ -1,35 +1,42 @@
 ---
-- name: Install required packages for Debian/Ubuntu
-  ansible.builtin.package:
+- name: Install SSSD and LDAP packages
+  ansible.builtin.apt:
     name:
       - sssd
       - sssd-tools
       - libpam-sss
+      - libnss-sss
       - ldap-utils
     state: present
+    update_cache: true
 
-- name: Configure SSSD configuration file
+- name: Deploy SSSD configuration
   ansible.builtin.template:
     src: sssd.conf.j2
     dest: /etc/sssd/sssd.conf
     owner: root
     group: root
-    mode: '0600'
+    mode: "0600"
   notify: Restart sssd
 
 - name: Enable SSSD and mkhomedir in PAM
   ansible.builtin.command: pam-auth-update --enable sssd --enable mkhomedir --force
   changed_when: false
 
-- name: Force handlers to run now (to restart sssd)
+- name: Flush handlers (restart sssd before test)
   ansible.builtin.meta: flush_handlers
 
-- name: Check user from LDAP
-  ansible.builtin.command: id {{ lldap_test_user | default('g4ng') }}
-  register: lldap_g4ng_info
+- name: Verify LDAP user resolution
+  ansible.builtin.command: "id {{ lldap_test_user }}"
+  register: lldap_test_result
   ignore_errors: true
   changed_when: false
 
-- name: Display g4ng info
+- name: Show LDAP user info
   ansible.builtin.debug:
-    msg: "{{ lldap_g4ng_info.stdout }}"
+    msg: "LDAP lookup result for '{{ lldap_test_user }}': {{ lldap_test_result.stdout | default('NOT FOUND') }}"
+
+- name: Fail if LDAP user not found
+  ansible.builtin.fail:
+    msg: "Could not resolve LDAP user '{{ lldap_test_user }}'. Check SSSD configuration and LDAP server connectivity."
+  when: lldap_test_result.rc != 0

@@ -1,113 +1,123 @@
-variable "tags" {
-  type    = list(string)
-  default = []
-}
-
 variable "hostname" {
   type        = string
-  description = "The hostname for the LXC container."
+  description = "Hostname for the LXC container."
 }
 
 variable "template" {
   type        = string
-  description = "The name of the LXC template file to use (e.g., 'local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst')."
+  description = "LXC template path (e.g. 'local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst')."
 }
 
 variable "target_node" {
   type        = string
-  description = "The Proxmox node where the container will be created."
+  description = "Proxmox node where the container will be created."
 }
 
 variable "password" {
   type        = string
-  description = "The password for the container's root user."
+  description = "Root password for the container."
   sensitive   = true
+}
+
+variable "unprivileged" {
+  type        = bool
+  description = "Run container in unprivileged mode (recommended)."
+  default     = true
+}
+
+variable "onboot" {
+  type        = bool
+  description = "Start container automatically on Proxmox boot."
+  default     = true
+}
+
+variable "start" {
+  type        = bool
+  description = "Start container immediately after creation."
+  default     = true
 }
 
 variable "cores" {
   type        = number
-  description = "Number of CPU cores for the container."
+  description = "Number of CPU cores."
   default     = 1
 }
 
 variable "memory" {
   type        = number
-  description = "RAM in MB for the container."
+  description = "RAM in MB."
   default     = 512
 }
 
 variable "swap" {
-  type    = string
-  default = "512"
+  type        = number
+  description = "Swap in MB."
+  default     = 512
 }
 
-variable "nameserver" {
-  type    = string
-  default = null
+variable "rootfs_storage" {
+  type        = string
+  description = "Storage backend for the root filesystem."
+  default     = "local-lvm"
+}
+
+variable "rootfs_size" {
+  type        = string
+  description = "Root disk size (e.g. '10G')."
+  default     = "10G"
 }
 
 variable "network_name" {
-  type    = string
-  default = "eth0"
+  type        = string
+  description = "Network interface name inside the container."
+  default     = "eth0"
 }
 
 variable "network_bridge" {
   type        = string
-  description = "The Proxmox network bridge to use (e.g., 'vmbr0')."
+  description = "Proxmox bridge to attach to (e.g. 'vmbr0')."
   default     = "vmbr0"
 }
 
 variable "network_ip" {
   type        = string
-  description = "The CIDR IP address for the container (e.g., '192.168.1.100/24'). Leave as 'dhcp' to use DHCP."
+  description = "CIDR IP address (e.g. '192.168.1.100/24') or 'dhcp'."
   default     = "dhcp"
 }
 
 variable "network_gateway" {
   type        = string
-  description = "The gateway for the container's network."
-  default     = "" # Empty so Proxmox won't set it when using DHCP
+  description = "Default gateway. Leave empty when using DHCP."
+  default     = ""
 }
 
 variable "network_tag" {
-  type    = string
-  default = null
+  type        = number
+  description = "VLAN tag. Set to null to disable."
+  default     = null
+}
+
+variable "nameserver" {
+  type        = string
+  description = "DNS server for the container. Leave null to inherit from Proxmox."
+  default     = null
 }
 
 variable "ssh_public_key" {
   type        = string
-  description = "The public SSH key to allow passwordless access."
-}
-
-variable "unprivileged" {
-  type        = bool
-  description = "Defines if the container should be unprivileged (more secure)."
-  default     = true
-}
-
-variable "rootfs_storage" {
-  type    = string
-  default = "local-lvm"
-}
-
-variable "rootfs_size" {
-  type    = string
-  default = "10G"
+  description = "SSH public key for passwordless root access."
 }
 
 variable "features_nesting" {
-  type    = bool
-  default = true
+  type        = bool
+  description = "Enable LXC nesting (required for Docker inside LXC)."
+  default     = false
 }
 
-variable "onboot" {
-  type    = bool
-  default = true
-}
-
-variable "start" {
-  type    = bool
-  default = true
+variable "tags" {
+  type        = list(string)
+  description = "List of tags to apply to the container."
+  default     = []
 }
 
 variable "bind_mounts" {
@@ -120,5 +130,6 @@ variable "bind_mounts" {
     replicate = optional(bool)
     backup    = optional(bool)
   }))
-  default = []
+  description = "Additional bind mounts / mount points."
+  default     = []
 }

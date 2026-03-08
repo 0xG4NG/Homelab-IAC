@@ -8,34 +8,39 @@
 
 - name: Create temp directory
   ansible.builtin.file:
-    path: "{{ bw_tmp_dir }}"
+    path: "{{ bitwarden_cli_tmp_dir }}"
     state: directory
     mode: "0755"
 
 - name: Download Bitwarden CLI
   ansible.builtin.get_url:
-    url: "{{ bw_download_url }}"
-    dest: "{{ bw_tmp_dir }}/bw.zip"
+    url: "{{ bitwarden_cli_download_url }}"
+    dest: "{{ bitwarden_cli_tmp_dir }}/bw.zip"
     mode: "0644"
 
 - name: Unzip Bitwarden CLI
   ansible.builtin.unarchive:
-    src: "{{ bw_tmp_dir }}/bw.zip"
-    dest: "{{ bw_tmp_dir }}"
+    src: "{{ bitwarden_cli_tmp_dir }}/bw.zip"
+    dest: "{{ bitwarden_cli_tmp_dir }}"
     remote_src: true
 
-- name: Move executable to {{ bw_install_dir }}
+- name: Install bw binary to {{ bitwarden_cli_install_dir }}
   ansible.builtin.copy:
-    src: "{{ bw_tmp_dir }}/bw"
-    dest: "{{ bw_install_dir }}/bw"
+    src: "{{ bitwarden_cli_tmp_dir }}/bw"
+    dest: "{{ bitwarden_cli_install_dir }}/bw"
     mode: "0755"
     remote_src: true
 
+- name: Clean up temp directory
+  ansible.builtin.file:
+    path: "{{ bitwarden_cli_tmp_dir }}"
+    state: absent
+
 - name: Check installed version
-  ansible.builtin.command: "{{ bw_install_dir }}/bw --version"
-  register: bitwarden_cli_bw_version
+  ansible.builtin.command: "{{ bitwarden_cli_install_dir }}/bw --version"
+  register: bitwarden_cli_version_output
   changed_when: false
 
 - name: Display installed version
   ansible.builtin.debug:
-    msg: "Bitwarden CLI installed successfully. Version: {{ bw_version.stdout }}"
+    msg: "Bitwarden CLI installed successfully. Version: {{ bitwarden_cli_version_output.stdout }}"

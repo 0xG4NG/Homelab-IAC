@@ -1,15 +1,32 @@
+# ── Secrets from Bitwarden ────────────────────────────────────────────────────
 
-data "bitwarden-secrets_secret" "ssh_public_key_secret" {
+data "bitwarden-secrets_secret" "ssh_public_key" {
   id = "77ff9ac7-55d2-44fb-9a0a-b37300b5cbcb"
 }
 
-module "pihole_lxc" {
+# ── LXC Containers ────────────────────────────────────────────────────────────
+
+module "pihole" {
   source = "../../modules/proxmox-lxc"
-  
-  lxc_hostname    = "pihole"
-  lxc_target_node = "pve"
-  lxc_template    = "local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst"
-  lxc_password    = var.lxc_root_password
-  lxc_ip          = "192.168.1.5/24"
-  lxc_gateway     = "192.168.1.1"
+
+  hostname    = "pihole"
+  target_node = var.proxmox_node
+  template    = var.lxc_template
+  password    = var.lxc_root_password
+
+  cores          = 1
+  memory         = 512
+  rootfs_size    = "4G"
+  network_ip     = "192.168.1.5/24"
+  network_gateway = "192.168.1.1"
+
+  ssh_public_key = data.bitwarden-secrets_secret.ssh_public_key.value
+  tags           = ["dns", "infrastructure"]
 }
+
+# Add more containers following the same pattern:
+#
+# module "my_service" {
+#   source = "../../modules/proxmox-lxc"
+#   ...
+# }

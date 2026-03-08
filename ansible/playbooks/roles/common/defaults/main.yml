@@ -1,0 +1,16 @@
+---
+common_timezone: "{{ timezone | default('Europe/Madrid') }}"
+common_locale: "{{ locale | default('es_ES.UTF-8') }}"
+
+common_packages:
+  - curl
+  - git
+  - btop
+  - neovim
+  - unzip
+  - gnupg
+  - ca-certificates
+  - apt-transport-https
+  - lsb-release
+
+common_extra_packages: []

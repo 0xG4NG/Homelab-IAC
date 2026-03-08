@@ -1,21 +1,26 @@
 ---
-- name: Ensure ~/.ssh directory exists for each user
+- name: Ensure ~/.ssh directory exists
   ansible.builtin.file:
-    path: "~/.ssh"
+    path: "~{{ ssh_deploy_user }}/.ssh"
     state: directory
+    owner: "{{ ssh_deploy_user }}"
+    group: "{{ ssh_deploy_user }}"
     mode: "0700"
 
-- name: Copy public key to authorized_keys
+- name: Deploy authorized_keys
   ansible.builtin.copy:
-    dest: "~/.ssh/authorized_keys"
-    content: "{{ ssh_ansible_public_key_bws }}"
+    dest: "~{{ ssh_deploy_user }}/.ssh/authorized_keys"
+    content: "{{ ssh_authorized_key }}\n"
+    owner: "{{ ssh_deploy_user }}"
+    group: "{{ ssh_deploy_user }}"
     mode: "0600"
 
-- name: Ensure sshd_config is configured according to template
+- name: Deploy sshd_config from template
   ansible.builtin.template:
     src: sshd_config.j2
     dest: /etc/ssh/sshd_config
     owner: root
     group: root
     mode: "0600"
-  notify: Restart ssh
+    validate: "sshd -t -f %s"
+  notify: Restart sshd

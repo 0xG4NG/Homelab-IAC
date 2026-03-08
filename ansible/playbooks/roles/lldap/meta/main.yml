@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: lldap
+  author: g4ng
+  description: Configures SSSD to authenticate against an LLDAP (LDAP) server
+  license: MIT
+  min_ansible_version: "2.14"
+  platforms:
+    - name: Debian
+      versions: [bullseye, bookworm]
+    - name: Ubuntu
+      versions: ["22.04", "24.04"]
+
+dependencies: []

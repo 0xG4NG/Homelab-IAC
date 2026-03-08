@@ -1,15 +1,19 @@
-# Managed by Ansible
+# Managed by Ansible — do not edit manually
 
-Port 22
-PermitRootLogin prohibit-password
-PasswordAuthentication no
+Port {{ ssh_port }}
+PermitRootLogin {{ ssh_permit_root_login }}
+PasswordAuthentication {{ ssh_password_authentication }}
 ChallengeResponseAuthentication no
+KbdInteractiveAuthentication no
 UsePAM yes
 
-Subsystem sftp /usr/lib/openssh/sftp-server
-
-X11Forwarding no
+X11Forwarding {{ ssh_x11_forwarding }}
 PrintMotd no
-LoginGraceTime 60
-MaxAuthTries 3
-MaxSessions 2
+LoginGraceTime {{ ssh_login_grace_time }}
+MaxAuthTries {{ ssh_max_auth_tries }}
+MaxSessions {{ ssh_max_sessions }}
+
+# Only allow key-based authentication
+AuthenticationMethods publickey
+
+Subsystem sftp /usr/lib/openssh/sftp-server

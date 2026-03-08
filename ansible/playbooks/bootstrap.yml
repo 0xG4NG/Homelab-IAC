@@ -1,12 +1,21 @@
 ---
-- name: 1. Configurar SSH seguro
+# Bootstrap: fully configures a fresh node from scratch
+# Usage: ansible-playbook playbooks/bootstrap.yml -e "bws_access_token=$BWS_ACCESS_TOKEN"
+
+- name: Bootstrap — Common base configuration
+  hosts: all
+  become: true
+  roles:
+    - common
+
+- name: Bootstrap — Harden SSH and deploy keys
   hosts: all
   become: true
   roles:
     - ssh
 
-- name: 2. Configurar clientes LLDAP
-  hosts: all
+- name: Bootstrap — Configure LDAP authentication (LXC only)
+  hosts: LXC
   become: true
   roles:
     - lldap

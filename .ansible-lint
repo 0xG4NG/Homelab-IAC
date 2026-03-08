@@ -1,0 +1,15 @@
+---
+profile: production
+
+exclude_paths:
+  - ansible/facts_cache/
+  - ansible/tmp/
+  - ansible/logs/
+
+skip_list:
+  - yaml[line-length]
+
+warn_list:
+  - experimental
+
+use_default_rules: true

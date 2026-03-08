@@ -1,0 +1,5 @@
+---
+# Variables applied to the Proxmox hypervisor node
+
+# PVE does not join LDAP (host-level auth only)
+lldap_enabled: false

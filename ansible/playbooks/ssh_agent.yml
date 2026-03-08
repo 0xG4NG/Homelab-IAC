@@ -1,27 +1,35 @@
 ---
+# Loads the Ansible SSH private key into ssh-agent from Bitwarden Secrets Manager
+# Usage: ansible-playbook playbooks/ssh_agent.yml -e "bws_access_token=$BWS_ACCESS_TOKEN"
+# Run this before any playbook that requires key-based SSH auth
+
 - name: Load SSH private key into ssh-agent
   hosts: localhost
   connection: local
   gather_facts: false
   tasks:
-
-    - name: Ensure ssh-agent is running
-      ansible.builtin.shell: |
-        eval $(ssh-agent -s)
-        set -o pipefail
-      register: ssh_agent
+    - name: Check ssh-agent is available
+      ansible.builtin.command: ssh-add -l
+      register: ssh_agent_check
       changed_when: false
-      args:
-        executable: /bin/bash
+      failed_when: ssh_agent_check.rc == 2  # rc=2 means agent not running, rc=1 means no keys (ok)
 
     - name: Add private key to ssh-agent
       ansible.builtin.shell: |
         set -o pipefail
-        echo "{{ ansible_private_key_bws }}" | ssh-add /dev/stdin
-      environment:
-        SSH_AUTH_SOCK: "{{ lookup('env', 'SSH_AUTH_SOCK') }}"
-      register: ssh_add
-      changed_when: true
-      no_log: true
+        echo "{{ ansible_private_key_bws }}" | ssh-add -
       args:
         executable: /bin/bash
+      environment:
+        SSH_AUTH_SOCK: "{{ lookup('env', 'SSH_AUTH_SOCK') }}"
+      changed_when: true
+      no_log: true
+
+    - name: Confirm keys loaded
+      ansible.builtin.command: ssh-add -l
+      register: ssh_agent_keys
+      changed_when: false
+
+    - name: Show loaded keys
+      ansible.builtin.debug:
+        msg: "Keys in agent: {{ ssh_agent_keys.stdout_lines }}"

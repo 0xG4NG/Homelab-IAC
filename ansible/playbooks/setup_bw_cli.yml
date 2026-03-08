@@ -1,6 +1,10 @@
 ---
-- name: Instalar Bitwarden CLI en el sistema
+# Installs Bitwarden CLI on the Ansible control node
+# Usage: ansible-playbook playbooks/setup_bw_cli.yml
+
+- name: Install Bitwarden CLI on control node
   hosts: localhost
   become: true
+  gather_facts: true
   roles:
     - bitwarden_cli

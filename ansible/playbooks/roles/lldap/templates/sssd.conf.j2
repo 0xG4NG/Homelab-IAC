@@ -1,3 +1,5 @@
+# Managed by Ansible — do not edit manually
+
 [sssd]
 services = nss, pam, sudo
 config_file_version = 2
@@ -7,19 +9,23 @@ domains = default
 
 [pam]
 
+[sudo]
+
 [domain/default]
 id_provider = ldap
 auth_provider = ldap
 
-
 ldap_uri = {{ lldap_ldap_server }}
 ldap_search_base = {{ lldap_ldap_basedn }}
 
-ldap_default_bind_dn =
-ldap_default_authtok =
+{% if lldap_bind_dn %}
+ldap_default_bind_dn = {{ lldap_bind_dn }}
+ldap_default_authtok = {{ lldap_bind_password }}
+{% endif %}
 
-# Opciones para LLDAP
+# LLDAP-specific schema settings
 ldap_schema = rfc2307bis
+
 ldap_user_search_base = ou=people,{{ lldap_ldap_basedn }}
 ldap_user_object_class = person
 ldap_user_name = uid
@@ -31,9 +37,10 @@ ldap_group_search_base = ou=groups,{{ lldap_ldap_basedn }}
 ldap_group_object_class = groupOfNames
 ldap_group_name = cn
 
-access_provider = ldap
-create_homedir = True
 ldap_sudo_search_base = ou=sudoers,{{ lldap_ldap_basedn }}
-cache_credentials = True
-default_shell = /bin/bash
-fallback_homedir = /home/%u
+
+access_provider = ldap
+cache_credentials = true
+create_homedir = true
+default_shell = {{ lldap_default_shell }}
+fallback_homedir = {{ lldap_fallback_homedir }}

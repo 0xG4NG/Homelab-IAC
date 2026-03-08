@@ -1,3 +1,16 @@
-ssh_ansible_public_key_bws: "{{ lookup('community.general.bitwarden_secrets_manager',
-     'ddd446f9-7d6f-4b65-9b70-b37301083e18',
-      bws_access_token=bws_access_token).value }}"
+---
+# SSH daemon settings
+ssh_port: 22
+ssh_permit_root_login: "prohibit-password"
+ssh_password_authentication: "no"
+ssh_x11_forwarding: "no"
+ssh_login_grace_time: 60
+ssh_max_auth_tries: 3
+ssh_max_sessions: 2
+
+# Authorized key — fetched from Bitwarden Secrets Manager at runtime
+# Override via group_vars/all/main.yml or pass -e ssh_ansible_public_key=...
+ssh_authorized_key: "{{ ssh_ansible_public_key_bws }}"
+
+# Target user for authorized_keys deployment
+ssh_deploy_user: "root"

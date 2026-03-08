@@ -1,0 +1,19 @@
+---
+# ── Bitwarden Secrets Manager ─────────────────────────────────────────────────
+# bws_access_token is expected to be injected at runtime via:
+#   export BWS_ACCESS_TOKEN=<token>
+#   ansible-playbook ... -e "bws_access_token=$BWS_ACCESS_TOKEN"
+# Or via an encrypted vault file (bws.yml, excluded from git).
+
+# ── Common Settings ───────────────────────────────────────────────────────────
+timezone: "Europe/Madrid"
+locale: "es_ES.UTF-8"
+
+# ── SSH Keys (fetched from Bitwarden Secrets Manager) ─────────────────────────
+ssh_ansible_public_key_bws: "{{ lookup('community.general.bitwarden_secrets_manager',
+     'ddd446f9-7d6f-4b65-9b70-b37301083e18',
+      bws_access_token=bws_access_token).value }}"
+
+ansible_private_key_bws: "{{ lookup('community.general.bitwarden_secrets_manager',
+     'REPLACE_WITH_PRIVATE_KEY_SECRET_ID',
+      bws_access_token=bws_access_token).value }}"
